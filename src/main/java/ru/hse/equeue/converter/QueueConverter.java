@@ -6,23 +6,31 @@ import org.springframework.stereotype.Component;
 import ru.hse.equeue.dto.CreateQueueDto;
 import ru.hse.equeue.dto.QueueDto;
 import ru.hse.equeue.model.Queue;
+import ru.hse.equeue.model.enums.EQueueStatus;
+import ru.hse.equeue.respository.QueueStatusEnumRepository;
+
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
 public class QueueConverter {
 
     private final ModelMapper modelMapper;
+    private final QueueStatusEnumRepository queueStatusEnumRepository;
 
     public Queue fromDto(QueueDto queueDto) {
         return modelMapper.map(queueDto, Queue.class);
     }
 
     public Queue fromDto(CreateQueueDto queueDto) {
-        return modelMapper.map(queueDto, Queue.class);
-    }
-
-    public CreateQueueDto toCreateDto(Queue queue) {
-        return modelMapper.map(queue, CreateQueueDto.class);
+        Queue queue =  modelMapper.map(queueDto, Queue.class);
+        queue.getStatus().setStatus(queueStatusEnumRepository
+                .findByName(EQueueStatus
+                        .valueOf(queueDto
+                                .getStatus()
+                                .getStatus()
+                                .toUpperCase(Locale.ROOT))));
+        return queue;
     }
 
     public QueueDto toDto(Queue queue) {

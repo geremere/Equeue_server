@@ -37,7 +37,7 @@
             <column name="average_service_time" type="DOUBLE">
                 <constraints nullable="false"/>
             </column>
-            <column name="total_count_of_users" type="int" defaultValue="0">
+            <column name="total_count_of_users" type="int" defaultValue="1">
                 <constraints nullable="false"/>
             </column>
             <column name="status_id" type="BIGINT" >
@@ -50,6 +50,9 @@
         <createTable tableName="queue">
             <column name="id" type="bigserial">
                 <constraints primaryKey="true"/>
+            </column>
+            <column name="owner_id" type="text">
+                <constraints nullable="false" foreignKeyName="fk_queue_user_owner_binding" references="user(id)"/>
             </column>
             <column name="name" type="text">
                 <constraints nullable="false"/>
@@ -96,6 +99,9 @@
         </insert>
 
         <createTable tableName="user_queue_binding">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true"/>
+            </column>
             <column name="user_id" type="TEXT">
                 <constraints nullable="false" foreignKeyName="fk_user_queue_binding_user" references="user(id)"/>
             </column>

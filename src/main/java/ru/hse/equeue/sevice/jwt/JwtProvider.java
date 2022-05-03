@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -28,12 +29,12 @@ public class JwtProvider {
     private String jwtSecret;
 
     @Value("${android.clientId}")
-    public String clientId;
+    public List<String> clientId;
 
     public GoogleIdToken validateAndGetGoogleIdToken(String idTokenString) {
         GoogleIdTokenVerifier verifier =
                 new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                        .setAudience(Collections.singletonList(clientId))
+                        .setAudience(clientId)
                         .build();
         try {
             GoogleIdToken idToken = verifier.verify(idTokenString);

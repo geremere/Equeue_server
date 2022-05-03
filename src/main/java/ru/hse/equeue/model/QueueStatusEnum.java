@@ -23,4 +23,9 @@ public class QueueStatusEnum implements IEntity<Long> {
 
     @Enumerated(EnumType.STRING)
     private EQueueStatus name;
+
+    @Override
+    public String toString(){
+        return name.getValue();
+    }
 }

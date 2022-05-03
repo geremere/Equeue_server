@@ -2,6 +2,8 @@ package ru.hse.equeue.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import ru.hse.equeue.model.base.BaseNamedDeletedEntity;
 import ru.hse.equeue.model.base.BaseNamedEntity;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class Queue extends BaseNamedDeletedEntity {
 
     @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     List<QueueUserBinding> usersQueue = new ArrayList<>();
 
     private Double x;
@@ -27,9 +30,12 @@ public class Queue extends BaseNamedDeletedEntity {
     private String photoUrl;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.JOIN)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "status_id")
     private QueueStatus status;
 }

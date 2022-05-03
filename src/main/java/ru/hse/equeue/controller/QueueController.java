@@ -21,8 +21,8 @@ public class QueueController {
     private final QueueConverter queueConverter;
 
     @PostMapping(EndPoints.BASE_QUEUE)
-    public CreateQueueDto create(CreateQueueDto queueDto) {
-        return queueConverter.toCreateDto(queueService.create(queueConverter.fromDto(queueDto)));
+    public QueueDto create(@RequestBody CreateQueueDto queueDto) {
+        return queueConverter.toDto(queueService.create(queueConverter.fromDto(queueDto)));
     }
 
     @GetMapping(EndPoints.QUEUE_BY_ID)
@@ -31,14 +31,14 @@ public class QueueController {
     }
 
     @PostMapping(EndPoints.QUEUE_LIST)
-    public Page<CreateQueueDto> list(Pageable pageable,
+    public Page<QueueDto> list(Pageable pageable,
                                      Predicate predicate,
                                      @RequestBody(required = false) PositionDto positionDto) {
-        return queueService.list(pageable, predicate).map(queueConverter::toCreateDto);
+        return queueService.list(pageable, predicate).map(queueConverter::toDto);
     }
 
     @PutMapping(EndPoints.QUEUE_BY_ID)
-    public QueueDto update(@PathVariable Long id, CreateQueueDto queueDto) {
+    public QueueDto update(@PathVariable Long id, @RequestBody CreateQueueDto queueDto) {
         return queueConverter.toDto(queueService.update(id, queueConverter.fromDto(queueDto)));
     }
 }
