@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet id="init-queue-status" author="rmimamov">
+
+        <createTable tableName="queue">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="x" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="y" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="photo_url" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_deleted" type="boolean" defaultValueComputed="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_queue_binding">
+            <column name="user_id" type="TEXT">
+                <constraints nullable="false" foreignKeyName="fk_user_queue_binding_user" references="user(id)"/>
+            </column>
+            <column name="queue_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_user_queue_binding_role" references="queue(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>
