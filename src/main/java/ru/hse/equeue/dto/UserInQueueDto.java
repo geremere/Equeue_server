@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class StatusDto {
-    int countOfUsers;
-    double averageServiceTime;
+public class UserInQueueDto {
+    private UserDto user;
+    private String status;
 }

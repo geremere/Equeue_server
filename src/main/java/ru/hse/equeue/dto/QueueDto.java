@@ -2,7 +2,6 @@ package ru.hse.equeue.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.hse.equeue.model.User;
 
 import java.util.List;
 
@@ -13,6 +12,7 @@ public class QueueDto {
     private Double x;
     private Double y;
     private String photoUrl;
-    private User owner;
-    private List<UserDto> usersQueue;
+    private UserDto owner;
+    private List<UserInQueueDto> usersQueue;
+    private QueueStatusDto status;
 }

@@ -32,12 +32,33 @@
             </column>
         </createTable>
 
+        <createTable tableName="user_in_queue_status">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="user_in_queue_status">
+            <column name="id" value="1"/>
+            <column name="name" value="SERVISED"/>
+        </insert>
+        <insert tableName="user_in_queue_status">
+            <column name="id" value="2"/>
+            <column name="name" value="IN_QUEUE"/>
+        </insert>
+
         <createTable tableName="user_queue_binding">
             <column name="user_id" type="TEXT">
                 <constraints nullable="false" foreignKeyName="fk_user_queue_binding_user" references="user(id)"/>
             </column>
             <column name="queue_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_user_queue_binding_role" references="queue(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_user_queue_binding_queue" references="queue(id)"/>
+            </column>
+            <column name="status_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_user_queue_status_binding" references="user_in_queue_status(id)"/>
             </column>
         </createTable>
     </changeSet>

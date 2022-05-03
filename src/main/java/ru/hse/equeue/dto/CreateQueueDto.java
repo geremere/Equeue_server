@@ -7,8 +7,7 @@ import ru.hse.equeue.model.User;
 @Data
 @Builder
 public class CreateQueueDto {
-
     private String name;
     private User owner;
-    private StatusDto status;
+    private String photoUrl;
 }

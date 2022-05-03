@@ -19,13 +19,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Queue extends BaseNamedDeletedEntity {
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_queue_binding",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "queue_id"))
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    List<User> usersQueue = new ArrayList<>();
+    @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
+    List<QueueUserBinding> usersQueue = new ArrayList<>();
 
     private Double x;
     private Double y;
@@ -33,4 +28,7 @@ public class Queue extends BaseNamedDeletedEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     private User owner;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private QueueStatus status;
 }

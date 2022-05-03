@@ -1,6 +1,5 @@
 package ru.hse.equeue.model;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
