@@ -5,6 +5,48 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
     <changeSet id="init-queue-status" author="rmimamov">
 
+        <createTable tableName="queue_status_enum">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="queue_status_enum">
+            <column name="id" value="1"/>
+            <column name="name" value="ACTIVE"/>
+        </insert>
+        <insert tableName="queue_status_enum">
+            <column name="id" value="2"/>
+            <column name="name" value="CLOSED"/>
+        </insert>
+        <insert tableName="queue_status_enum">
+            <column name="id" value="3"/>
+            <column name="name" value="ON_PAUSE"/>
+        </insert>
+
+        <createTable tableName="queue_status">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="count_of_users" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="average_service_time" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_count_of_users" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="BIGINT" >
+                <constraints nullable="false" foreignKeyName="fk_queue_status_binding" references="queue_status_enum(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="init-queue" author="rmimamov">
+
         <createTable tableName="queue">
             <column name="id" type="bigserial">
                 <constraints primaryKey="true"/>
@@ -20,6 +62,9 @@
             </column>
             <column name="photo_url" type="text">
                 <constraints nullable="true"/>
+            </column>
+            <column name="status_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_queue_binding_status" references="queue_status(id)"/>
             </column>
             <column name="is_deleted" type="boolean" defaultValueComputed="false">
                 <constraints nullable="false"/>

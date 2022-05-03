@@ -31,7 +31,7 @@ public class QueueUserBinding {
     private Queue queue;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "status_id")
     private UserInQueueStatus status;
 
 }

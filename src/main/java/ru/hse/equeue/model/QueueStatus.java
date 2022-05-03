@@ -28,7 +28,7 @@ public class QueueStatus implements IEntity<Long> {
     private double serviceTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "status_id")
     private QueueStatusEnum status;
 
 }

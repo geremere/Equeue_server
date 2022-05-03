@@ -30,5 +30,6 @@ public class Queue extends BaseNamedDeletedEntity {
     private User owner;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id")
     private QueueStatus status;
 }
