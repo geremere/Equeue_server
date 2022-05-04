@@ -30,6 +30,7 @@ public class QueueConverter {
                                 .getStatus()
                                 .getStatus()
                                 .toUpperCase(Locale.ROOT))));
+        queue.getStatus().setTotalUsersCount(1);
         return queue;
     }
 

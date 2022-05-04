@@ -6,12 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.hse.equeue.exception.BaseException;
 import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
 import ru.hse.equeue.model.QQueue;
 import ru.hse.equeue.model.Queue;
+import ru.hse.equeue.model.QueueStatusEnum;
+import ru.hse.equeue.model.enums.EQueueStatus;
 import ru.hse.equeue.respository.QueueRepository;
+import ru.hse.equeue.respository.QueueStatusEnumRepository;
 import ru.hse.equeue.sevice.base.AbstractBaseService;
+
+import java.util.Locale;
 
 
 @Service
@@ -20,6 +26,8 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
 
     @Getter
     private final QueueRepository repository;
+
+    private final QueueStatusEnumRepository queueStatusEnumRepository;
 
     public Queue getById(Long id) {
         return get(id)
@@ -34,11 +42,23 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         return save(queue);
     }
 
-    public Queue update(Long id, Queue queue){
+    public Queue changeStatus(String status, Long id, String userId) {
+        Queue queue = getById(id);
+        if (queue.getOwner().getId().equals(userId)) {
+            QueueStatusEnum newQueueStatusEnum = queueStatusEnumRepository
+                    .findByName(EQueueStatus
+                            .valueOf(status
+                                    .toUpperCase(Locale.ROOT)));
+            queue.getStatus().setStatus(newQueueStatusEnum);
+            save(queue);
+        }
+        throw new BaseException(ExceptionMessage.CHANGE_STATUS_NOT_ALLOWED);
+    }
+
+    public Queue update(Long id, Queue queue) {
         Queue oldQueue = getById(id);
-        oldQueue.setOwner(queue.getOwner());
-        oldQueue.setName(queue.getName());
-        oldQueue.setUpdatedAt(null);
-        return save(oldQueue);
+        queue.setId(oldQueue.getId());
+        queue.setCreatedAt(oldQueue.getCreatedAt());
+        return save(queue);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.base.IEntity;
 
 import javax.persistence.*;
@@ -16,15 +17,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_queue_binding", schema = "public")
 @ToString
-public class QueueUserBinding implements IEntity<Long> {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class QueueUserBinding extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User users;
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "queue_id")

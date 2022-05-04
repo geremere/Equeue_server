@@ -36,15 +36,6 @@ public class User implements IEntity<String> {
     @UpdateTimestamp
     private Date updatedAt;
 
-//    @OneToOne(mappedBy = "owner")
-//    private Queue queue;
-
-//    @OneToMany(mappedBy = "users", fetch = FetchType.EAGER)
-//    @ToString.Exclude
-//    @EqualsAndHashCode.Exclude
-//    List<QueueUserBinding> queuesUser = new ArrayList<>();
-
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role_binding",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -55,7 +55,7 @@
                 <constraints nullable="false" foreignKeyName="fk_queue_user_owner_binding" references="user(id)"/>
             </column>
             <column name="name" type="text">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="x" type="double">
                 <constraints nullable="false"/>
@@ -110,6 +110,12 @@
             </column>
             <column name="status_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_user_queue_status_binding" references="user_in_queue_status(id)"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>

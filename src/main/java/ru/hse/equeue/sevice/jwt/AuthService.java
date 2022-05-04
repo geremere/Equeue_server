@@ -18,7 +18,6 @@ public class AuthService {
     private final RoleRepository roleRepository;
     private final JwtProvider jwtProvider;
 
-
     public String auth(String idTokenString) {
         GoogleIdToken idToken = jwtProvider.validateAndGetGoogleIdToken(idTokenString);
         GoogleIdToken.Payload payload = idToken.getPayload();

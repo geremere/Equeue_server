@@ -1,6 +1,7 @@
 package ru.hse.equeue.model;
 
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.Collection;
 @Builder
 public class CustomUserDetails implements UserDetails {
     private final String username;
+    @Getter
     private final String userId;
     private final Collection<? extends GrantedAuthority> grantedAuthorities;
 

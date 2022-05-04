@@ -23,6 +23,8 @@ public class Queue extends BaseNamedDeletedEntity {
 
     @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     List<QueueUserBinding> usersQueue = new ArrayList<>();
 
     private Double x;
