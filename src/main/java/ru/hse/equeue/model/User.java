@@ -26,7 +26,7 @@ public class User implements IEntity<String> {
     private String email;
 
     @Column(name = "photo_url")
-    private String photoURL;
+    private String photoUrl;
 
     @Column(name = "created_at")
     @CreationTimestamp

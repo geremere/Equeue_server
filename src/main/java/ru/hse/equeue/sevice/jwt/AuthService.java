@@ -26,7 +26,7 @@ public class AuthService {
                     .id(payload.getSubject())
                     .name((String) payload.get("name"))
                     .email(payload.getEmail())
-                    .photoURL((String) payload.get("picture"))
+                    .photoUrl((String) payload.get("picture"))
                     .roles(Collections.singletonList(roleRepository.findByName(ERole.USER)))
                     .build());
         }
