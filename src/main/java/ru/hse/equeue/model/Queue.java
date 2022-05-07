@@ -1,5 +1,6 @@
 package ru.hse.equeue.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
@@ -30,10 +31,14 @@ public class Queue extends BaseNamedDeletedEntity {
     private Double x;
     private Double y;
     private String photoUrl;
+    private String address;
 
     @OneToOne(fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties
     private User owner;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

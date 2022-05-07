@@ -11,7 +11,9 @@ import ru.hse.equeue.model.User;
 public class UserConverter {
     private final ModelMapper modelMapper;
 
-    public UserDto toDto(User user){
+
+    public UserDto toDto(User user) {
         return modelMapper.map(user, UserDto.class);
+
     }
 }

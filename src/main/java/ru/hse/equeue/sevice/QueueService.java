@@ -39,6 +39,8 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
     }
 
     public Queue create(Queue queue) {
+        queue.getStatus().setStatus(queueStatusEnumRepository
+                .findByName(EQueueStatus.CLOSED));
         return save(queue);
     }
 

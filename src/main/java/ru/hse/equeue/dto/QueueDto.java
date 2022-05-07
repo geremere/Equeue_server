@@ -15,8 +15,9 @@ public class QueueDto {
     private String name;
     private Double x;
     private Double y;
+    private String address;
     private String photoUrl;
-    private UserDto owner;
+    private String ownerId;
     private List<UserInQueueDto> usersQueue;
     private QueueStatusDto status;
 }

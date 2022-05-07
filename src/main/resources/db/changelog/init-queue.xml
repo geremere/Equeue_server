@@ -66,6 +66,9 @@
             <column name="photo_url" type="text">
                 <constraints nullable="true"/>
             </column>
+            <column name="address" type="text">
+                <constraints nullable="true"/>
+            </column>
             <column name="status_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_queue_binding_status" references="queue_status(id)"/>
             </column>

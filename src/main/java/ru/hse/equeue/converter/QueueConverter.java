@@ -24,12 +24,6 @@ public class QueueConverter {
 
     public Queue fromDto(CreateQueueDto queueDto) {
         Queue queue =  modelMapper.map(queueDto, Queue.class);
-        queue.getStatus().setStatus(queueStatusEnumRepository
-                .findByName(EQueueStatus
-                        .valueOf(queueDto
-                                .getStatus()
-                                .getStatus()
-                                .toUpperCase(Locale.ROOT))));
         queue.getStatus().setTotalUsersCount(1);
         return queue;
     }
