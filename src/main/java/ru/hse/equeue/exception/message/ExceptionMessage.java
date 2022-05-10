@@ -12,6 +12,7 @@ public enum ExceptionMessage
     UNAUTHORIZED("You not authorized"),
     USER_NOT_FOUND("User not found"),
     QUEUE_NOT_FOUND("Queue not found"),
+    IMAGE_NOT_UPLOADED("Image not uploaded"),
     CHANGE_STATUS_NOT_ALLOWED("You haven't allow to change status of queue");
 
     private final String value;

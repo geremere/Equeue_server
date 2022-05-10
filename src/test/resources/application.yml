@@ -35,3 +35,15 @@ springdoc:
   swagger-ui:
     path: /swagger-ui/api-doc
     operationsSorter: method
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAUBCXPMUZ2CVIDQDU
+      secret-key: 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
+    region:
+      static:  eu-north-1
+    stack:
+      auto: false
+    bucket:
+      name: electronicqueue

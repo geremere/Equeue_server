@@ -10,6 +10,8 @@ public final class EndPoints {
 
     public static final String BASE_USER = BASE + "/user";
 
+    public static final String GET_IMAGE_BY_NAME = "/image/{imageName}";
+
     public static final String GET = "/get";
 
     public static final String BY_ID = "/{id}";

@@ -1,6 +1,7 @@
 package ru.hse.equeue.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,11 +20,13 @@ public class UserController {
     private final UserConverter userConverter;
 
     @GetMapping(EndPoints.BASE_USER)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     private UserByIdInQueueDto getById(@RequestParam(name = "userId") String userId, @RequestParam(name = "queueId") Long queueId) {
         return userService.getUserInQueueById(userId, queueId);
     }
 
     @GetMapping(EndPoints.BASE_USER + EndPoints.GET)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     private UserDto getUser(@CurrentUser CustomUserDetails user) {
         return userConverter.toDto(userService.getById(user.getUserId()));
     }

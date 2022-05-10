@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.hse.equeue.client.AmazonAwsS3Client;
 import ru.hse.equeue.exception.BaseException;
 import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
@@ -29,6 +32,9 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
 
     private final QueueStatusEnumRepository queueStatusEnumRepository;
 
+    private final AmazonAwsS3Client s3Client;
+
+
     public Queue getById(Long id) {
         return get(id)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.QUEUE_NOT_FOUND));
@@ -38,9 +44,12 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         return findAll(predicate, pageable);
     }
 
-    public Queue create(Queue queue) {
+    public Queue create(Queue queue, MultipartFile image) {
         queue.getStatus().setStatus(queueStatusEnumRepository
                 .findByName(EQueueStatus.CLOSED));
+        String imageName = s3Client.uploadFile(image);
+        queue.setPhotoUrl(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()+"/" + imageName);
+
         return save(queue);
     }
 

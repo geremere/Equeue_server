@@ -4,8 +4,8 @@ import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hse.equeue.config.CurrentUser;
 import ru.hse.equeue.converter.QueueConverter;
 import ru.hse.equeue.dto.CreateQueueDto;
@@ -24,23 +24,28 @@ public class QueueController {
     private final QueueConverter queueConverter;
 
     @PostMapping(EndPoints.BASE_QUEUE)
-    public QueueDto create(@RequestBody CreateQueueDto queueDto) {
-        return queueConverter.toDto(queueService.create(queueConverter.fromDto(queueDto)));
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public QueueDto create(@RequestPart CreateQueueDto queueDto,
+                           @RequestPart(value = "image") MultipartFile image) {
+        return queueConverter.toDto(queueService.create(queueConverter.fromDto(queueDto), image));
     }
 
     @GetMapping(EndPoints.BASE_QUEUE)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto changeStatus(@CurrentUser CustomUserDetails user,
-            @RequestParam(name = "status") String status
+                                 @RequestParam(name = "status") String status
             , @RequestParam(name = "id") Long id) {
-        return queueConverter.toDto(queueService.changeStatus(status,id,user.getUserId()));
+        return queueConverter.toDto(queueService.changeStatus(status, id, user.getUserId()));
     }
 
     @GetMapping(EndPoints.QUEUE_BY_ID)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto get(@PathVariable Long id) {
         return queueConverter.toDto(queueService.getById(id));
     }
 
     @PostMapping(EndPoints.QUEUE_LIST)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Page<QueueDto> list(Pageable pageable,
                                Predicate predicate,
                                @RequestBody(required = false) PositionDto positionDto) {
@@ -48,6 +53,7 @@ public class QueueController {
     }
 
     @PutMapping(EndPoints.QUEUE_BY_ID)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto update(@PathVariable Long id, @RequestBody QueueDto queueDto) {
         return queueConverter.toDto(queueService.update(id, queueConverter.fromDto(queueDto)));
     }
