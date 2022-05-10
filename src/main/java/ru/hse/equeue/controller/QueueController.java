@@ -25,7 +25,7 @@ public class QueueController {
 
     @PostMapping(EndPoints.BASE_QUEUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public QueueDto create(@RequestPart CreateQueueDto queueDto,
+    public QueueDto create(@RequestPart(value = "queue") CreateQueueDto queueDto,
                            @RequestPart(value = "image") MultipartFile image) {
         return queueConverter.toDto(queueService.create(queueConverter.fromDto(queueDto), image));
     }
