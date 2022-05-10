@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInQueueDto {
-    private UserDto user;
+    private String name;
+    private String photoUrl;
     private String status;
 }

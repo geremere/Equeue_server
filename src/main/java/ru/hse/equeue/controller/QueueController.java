@@ -30,12 +30,24 @@ public class QueueController {
         return queueConverter.toDto(queueService.create(queueConverter.fromDto(queueDto), image));
     }
 
-    @GetMapping(EndPoints.BASE_QUEUE)
+    @PutMapping(EndPoints.BASE_QUEUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto changeStatus(@CurrentUser CustomUserDetails user,
                                  @RequestParam(name = "status") String status
             , @RequestParam(name = "id") Long id) {
         return queueConverter.toDto(queueService.changeStatus(status, id, user.getUserId()));
+    }
+
+    @GetMapping(EndPoints.QUEUE_BY_USER_ID)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public QueueDto getByUserId(@CurrentUser CustomUserDetails user) {
+        return queueConverter.toDto(queueService.getByUserId(user.getUserId()));
+    }
+
+    @GetMapping(EndPoints.QUEUE_BY_OWNER_ID)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public QueueDto getByOwnerId(@CurrentUser CustomUserDetails user) {
+        return queueConverter.toDto(queueService.getByOwnerId(user.getUserId()));
     }
 
     @GetMapping(EndPoints.QUEUE_BY_ID)

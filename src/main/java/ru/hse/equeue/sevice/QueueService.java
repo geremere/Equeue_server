@@ -1,5 +1,6 @@
 package ru.hse.equeue.sevice;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +14,18 @@ import ru.hse.equeue.exception.BaseException;
 import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
 import ru.hse.equeue.model.QQueue;
+import ru.hse.equeue.model.QQueueUserBinding;
 import ru.hse.equeue.model.Queue;
 import ru.hse.equeue.model.QueueStatusEnum;
+import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.enums.EQueueStatus;
 import ru.hse.equeue.respository.QueueRepository;
 import ru.hse.equeue.respository.QueueStatusEnumRepository;
 import ru.hse.equeue.sevice.base.AbstractBaseService;
 
+import java.util.Comparator;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -48,7 +53,7 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         queue.getStatus().setStatus(queueStatusEnumRepository
                 .findByName(EQueueStatus.CLOSED));
         String imageName = s3Client.uploadFile(image);
-        queue.setPhotoUrl(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()+"/" + imageName);
+        queue.setPhotoUrl(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + imageName);
 
         return save(queue);
     }
@@ -64,6 +69,21 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
             save(queue);
         }
         throw new BaseException(ExceptionMessage.CHANGE_STATUS_NOT_ALLOWED);
+    }
+
+    public Queue getByUserId(String userId) {
+        return repository.getByUserId(userId)
+                .orElseThrow(() -> new BaseException(ExceptionMessage.QUEUE_NOT_FOUND));
+    }
+
+    public Queue getByOwnerId(String ownerId) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder(QQueue.queue.owner.id.eq(ownerId));
+        Queue queue = get(booleanBuilder)
+                .orElseThrow(() -> new BaseException(ExceptionMessage.QUEUE_NOT_FOUND));
+        queue.setUsersQueue(queue.getUsersQueue().stream()
+                .sorted(Comparator.comparing(BaseEntity::getCreatedAt))
+                .collect(Collectors.toList()));
+        return queue;
     }
 
     public Queue update(Long id, Queue queue) {

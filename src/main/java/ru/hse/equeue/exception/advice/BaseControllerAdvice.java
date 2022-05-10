@@ -34,7 +34,7 @@ public class BaseControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response> handleException(Exception e) {
-        log.info(e.getMessage());
+        log.error(e.getMessage());
         return new ResponseEntity(new Response(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
