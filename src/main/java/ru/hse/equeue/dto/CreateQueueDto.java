@@ -14,6 +14,7 @@ public class CreateQueueDto {
     private double x;
     private double y;
     private String name;
+    private String address;
     private User owner;
     private String photoUrl;
     private QueueStatusDto status;

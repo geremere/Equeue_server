@@ -12,33 +12,29 @@ import ru.hse.equeue.exception.response.Response;
 
 @ControllerAdvice
 @Slf4j
-public class BaseControllerAdvice
-{
+public class BaseControllerAdvice {
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<Response> handleException(BaseException e)
-    {
+    public ResponseEntity<Response> handleException(BaseException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Response> handleException(NotFoundException e)
-    {
+    public ResponseEntity<Response> handleException(NotFoundException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<Response> handleException(UnauthorizedException e)
-    {
+    public ResponseEntity<Response> handleException(UnauthorizedException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Response> handleException(Exception e){
+    public ResponseEntity<Response> handleException(Exception e) {
         log.info(e.getMessage());
-        return new ResponseEntity(new Response(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(new Response(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
