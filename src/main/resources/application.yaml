@@ -31,8 +31,8 @@ jwt:
 cloud:
   aws:
     credentials:
-      access-key: AKIAUBCXPMUZ2CVIDQDU
-      secret-key: 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
+      access-key: ${AWS_ACCESS_KEY}}
+      secret-key: ${AWS_SECRET_KEY}
     region:
       static: eu-north-1
     stack:
