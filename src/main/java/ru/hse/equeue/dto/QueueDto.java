@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueueDto {
+    private Long id;
     private String name;
     private Double x;
     private Double y;
