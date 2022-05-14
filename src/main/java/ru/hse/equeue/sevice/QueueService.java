@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.hse.equeue.client.AmazonAwsS3Client;
+import ru.hse.equeue.dto.PositionDto;
 import ru.hse.equeue.exception.BaseException;
 import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
@@ -45,8 +46,10 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.QUEUE_NOT_FOUND));
     }
 
-    public Page<Queue> list(Pageable pageable, Predicate predicate) {
-        return findAll(predicate, pageable);
+    public Page<Queue> list(Pageable pageable, PositionDto positionDto) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder(QQueue.queue.x.between(positionDto.getX() - positionDto.getR(), positionDto.getX() + positionDto.getR()));
+        booleanBuilder.and(QQueue.queue.y.between(positionDto.getY() - positionDto.getR(), positionDto.getY() + positionDto.getR()));
+        return findAll(booleanBuilder, pageable);
     }
 
     public Queue create(Queue queue, MultipartFile image) {
