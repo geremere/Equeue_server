@@ -59,7 +59,7 @@ public class QueueController {
         return queueConverter.toDto(queueService.getById(id));
     }
 
-    @PostMapping(EndPoints.QUEUE_LIST)
+    @PostMapping(EndPoints.QUEUE_LIST_BY_PAGE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Page<QueueDto> list(Pageable pageable) {
         return queueService.list(pageable).map(queueConverter::toDto);

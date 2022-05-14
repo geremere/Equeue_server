@@ -29,6 +29,7 @@ public final class EndPoints {
     public static final String QUEUE_BY_ID = BASE_QUEUE + BY_ID;
 
     public static final String QUEUE_LIST = BASE_QUEUE + "/list";
+    public static final String QUEUE_LIST_BY_PAGE = QUEUE_LIST + "/page";
     public static final String QUEUE_BY_USER_ID = BASE_QUEUE + "/byUserId";
     public static final String QUEUE_BY_OWNER_ID = BASE_QUEUE + "/byOwnerId";
 
