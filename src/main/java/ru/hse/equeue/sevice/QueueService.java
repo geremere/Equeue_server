@@ -25,6 +25,7 @@ import ru.hse.equeue.respository.QueueStatusEnumRepository;
 import ru.hse.equeue.sevice.base.AbstractBaseService;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -46,10 +47,14 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.QUEUE_NOT_FOUND));
     }
 
-    public Page<Queue> list(Pageable pageable, PositionDto positionDto) {
+    public Page<Queue> list(Pageable pageable) {
+        return findAll(pageable);
+    }
+
+    public List<Queue> list(PositionDto positionDto) {
         BooleanBuilder booleanBuilder = new BooleanBuilder(QQueue.queue.x.between(positionDto.getX() - positionDto.getR(), positionDto.getX() + positionDto.getR()));
         booleanBuilder.and(QQueue.queue.y.between(positionDto.getY() - positionDto.getR(), positionDto.getY() + positionDto.getR()));
-        return findAll(booleanBuilder, pageable);
+        return findAll(booleanBuilder);
     }
 
     public Queue create(Queue queue, MultipartFile image) {

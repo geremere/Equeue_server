@@ -15,6 +15,9 @@ import ru.hse.equeue.model.CustomUserDetails;
 import ru.hse.equeue.sevice.QueueService;
 import ru.hse.equeue.util.EndPoints;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -58,9 +61,14 @@ public class QueueController {
 
     @PostMapping(EndPoints.QUEUE_LIST)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public Page<QueueDto> list(Pageable pageable,
-                               @RequestBody(required = false) PositionDto positionDto) {
-        return queueService.list(pageable, positionDto).map(queueConverter::toDto);
+    public Page<QueueDto> list(Pageable pageable) {
+        return queueService.list(pageable).map(queueConverter::toDto);
+    }
+
+    @PostMapping(EndPoints.QUEUE_LIST)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public List<QueueDto> list(@RequestBody(required = false) PositionDto positionDto) {
+        return queueService.list(positionDto).stream().map(queueConverter::toDto).collect(Collectors.toList());
     }
 
     @PutMapping(EndPoints.QUEUE_BY_ID)
