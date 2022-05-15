@@ -35,6 +35,8 @@ public final class EndPoints {
     public static final String QUEUE_SERVE_USER = BASE_QUEUE + "/serve";
     public static final String QUEUE_BY_USER_ID = BASE_QUEUE + "/byUserId";
     public static final String QUEUE_BY_OWNER_ID = BASE_QUEUE + "/byOwnerId";
+    public static final String QUEUE_CHANGE_STATUS = BASE_QUEUE + "/status";
+
 
 
 }

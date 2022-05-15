@@ -33,7 +33,7 @@ public class QueueController {
         return queueConverter.toDto(queueService.create(queueConverter.fromDto(queueDto), image));
     }
 
-    @PutMapping(EndPoints.BASE_QUEUE)
+    @GetMapping(EndPoints.QUEUE_CHANGE_STATUS)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto changeStatus(@CurrentUser CustomUserDetails user,
                                  @RequestParam(name = "status") String status) {
