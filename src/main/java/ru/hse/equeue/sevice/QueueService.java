@@ -1,14 +1,10 @@
 package ru.hse.equeue.sevice;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,15 +14,14 @@ import ru.hse.equeue.exception.BaseException;
 import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
 import ru.hse.equeue.model.*;
+import ru.hse.equeue.model.Queue;
 import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.enums.EQueueStatus;
 import ru.hse.equeue.respository.QueueRepository;
 import ru.hse.equeue.respository.QueueStatusEnumRepository;
 import ru.hse.equeue.sevice.base.AbstractBaseService;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -69,17 +64,18 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         return save(queue);
     }
 
-    public Queue changeStatus(String status, Long id, String userId) {
-        Queue queue = getById(id);
-        if (queue.getOwner().getId().equals(userId)) {
-            QueueStatusEnum newQueueStatusEnum = queueStatusEnumRepository
-                    .findByName(EQueueStatus
-                            .valueOf(status
-                                    .toUpperCase(Locale.ROOT)));
-            queue.getStatus().setStatus(newQueueStatusEnum);
-            save(queue);
+    public Queue changeStatus(String status, String userId) {
+        User user = userService.getById(userId);
+        if (user.getQueue() == null) {
+            throw new NotFoundException(ExceptionMessage.CHANGE_STATUS_NOT_ALLOWED);
         }
-        throw new BaseException(ExceptionMessage.CHANGE_STATUS_NOT_ALLOWED);
+        Queue queue = getById(user.getQueue().getId());
+        QueueStatusEnum newQueueStatusEnum = queueStatusEnumRepository
+                .findByName(EQueueStatus
+                        .valueOf(status
+                                .toUpperCase(Locale.ROOT)));
+        queue.getStatus().setStatus(newQueueStatusEnum);
+        return save(queue);
     }
 
     public Queue getByUserId(String userId) {
@@ -125,5 +121,22 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         queue = getById(queueId);
         queue.getStatus().setCurrentUsersCount(queue.getStatus().getCurrentUsersCount() - 1);
         save(queue);
+    }
+
+    public Queue serve(String ownerId, Optional<String> userId) {
+        User user = userService.getById(ownerId);
+        Optional<UserInQueue> servisedUserInQueue = userInQueueService.deleteServised(user.getQueue().getId());
+        userId.ifPresent(id -> userInQueueService.newServe(id, user.getQueue().getId()));
+        Queue queue  = getById(user.getQueue().getId());
+        servisedUserInQueue.ifPresent(userInQueue -> {
+            long delta = (new Date().getTime() - userInQueue.getUpdatedAt().getTime()) / 1000;
+            queue.getStatus()
+                    .setServiceTime(
+                            (queue.getStatus().getServiceTime() * queue.getStatus().getTotalUsersCount() + delta) /
+                                    (queue.getStatus().getTotalUsersCount() + 1));
+            queue.getStatus().setTotalUsersCount(queue.getStatus().getTotalUsersCount() + 1);
+            queue.getStatus().setCurrentUsersCount(queue.getStatus().getCurrentUsersCount() - 1);
+        });
+        return save(queue);
     }
 }

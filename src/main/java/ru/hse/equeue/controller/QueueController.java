@@ -15,6 +15,7 @@ import ru.hse.equeue.sevice.QueueService;
 import ru.hse.equeue.util.EndPoints;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -35,9 +36,8 @@ public class QueueController {
     @PutMapping(EndPoints.BASE_QUEUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto changeStatus(@CurrentUser CustomUserDetails user,
-                                 @RequestParam(name = "status") String status
-            , @RequestParam(name = "id") Long id) {
-        return queueConverter.toDto(queueService.changeStatus(status, id, user.getUserId()));
+                                 @RequestParam(name = "status") String status) {
+        return queueConverter.toDto(queueService.changeStatus(status, user.getUserId()));
     }
 
     @GetMapping(EndPoints.QUEUE_BY_USER_ID)
@@ -56,6 +56,13 @@ public class QueueController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto get(@PathVariable Long id) {
         return queueConverter.toDto(queueService.getById(id));
+    }
+
+    @GetMapping(EndPoints.QUEUE_SERVE_USER)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public QueueDto serve(@CurrentUser CustomUserDetails user,
+                             @RequestParam(value = "userId", required = false) Optional<String> userId) {
+        return queueConverter.toDto(queueService.serve(user.getUserId(), userId));
     }
 
     @PostMapping(EndPoints.QUEUE_LIST_BY_PAGE)
