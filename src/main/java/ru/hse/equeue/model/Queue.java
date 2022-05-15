@@ -6,7 +6,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ru.hse.equeue.model.base.BaseNamedDeletedEntity;
-import ru.hse.equeue.model.base.BaseNamedEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class Queue extends BaseNamedDeletedEntity {
     @Fetch(value = FetchMode.SUBSELECT)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List<QueueUserBinding> usersQueue = new ArrayList<>();
+    List<UserInQueue> usersQueue = new ArrayList<>();
 
     private Double x;
     private Double y;

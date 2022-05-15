@@ -78,8 +78,15 @@ public class QueueController {
 
     @GetMapping(EndPoints.USER_TO_QUEUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public QueueDto update(@CurrentUser CustomUserDetails user,
+    public QueueDto standToQueue(@CurrentUser CustomUserDetails user,
+                                 @RequestParam(value = "queueId") Long queueId) {
+        return queueConverter.toDto(queueService.standToQueue(user.getUserId(), queueId));
+    }
+
+    @DeleteMapping(EndPoints.REMOVE_USER_FROM_QUEUE)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public void deleteUser(@CurrentUser CustomUserDetails user,
                            @RequestParam(value = "queueId") Long queueId) {
-        return queueConverter.toDto(queueService.standToQueue(user.getUserId(),queueId));
+        queueService.removeUserFromQueue(user.getUserId(), queueId);
     }
 }

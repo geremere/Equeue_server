@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import ru.hse.equeue.dto.CreateQueueDto;
 import ru.hse.equeue.dto.QueueDto;
 import ru.hse.equeue.model.Queue;
-import ru.hse.equeue.respository.QueueStatusEnumRepository;
 
 @Component
 @RequiredArgsConstructor

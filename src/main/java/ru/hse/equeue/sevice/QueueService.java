@@ -1,7 +1,6 @@
 package ru.hse.equeue.sevice;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,11 +16,8 @@ import ru.hse.equeue.exception.message.ExceptionMessage;
 import ru.hse.equeue.model.*;
 import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.enums.EQueueStatus;
-import ru.hse.equeue.model.enums.EUserInQueueStatus;
 import ru.hse.equeue.respository.QueueRepository;
 import ru.hse.equeue.respository.QueueStatusEnumRepository;
-import ru.hse.equeue.respository.QueueUserBindingRepository;
-import ru.hse.equeue.respository.UserInQueueStatusRepository;
 import ru.hse.equeue.sevice.base.AbstractBaseService;
 
 import java.util.Comparator;
@@ -40,8 +36,7 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
     private final UserService userService;
 
     private final QueueStatusEnumRepository queueStatusEnumRepository;
-    private final UserInQueueStatusRepository userInQueueStatusRepository;
-    private final QueueUserBindingRepository queueUserBindingRepository;
+    private final UserInQueueService userInQueueService;
 
     private final AmazonAwsS3Client s3Client;
 
@@ -111,12 +106,17 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         if (user.getId().equals(queue.getOwner().getId())) {
             throw new BaseException(ExceptionMessage.STAND_TO_QUEUE_OWNER);
         }
-        UserInQueueStatus status = userInQueueStatusRepository.findByName(EUserInQueueStatus.IN_QUEUE);
-        queueUserBindingRepository.save(QueueUserBinding.builder()
+        userInQueueService.create(UserInQueue.builder()
                 .queue(queue)
                 .user(user)
-                .status(status)
                 .build());
-        return getById(queueId);
+        queue = getById(queueId);
+        queue.getStatus().setCurrentUsersCount(queue.getStatus().getCurrentUsersCount() + 1);
+        return save(queue);
+    }
+
+    public void removeUserFromQueue(String userId, Long queueId){
+        Queue queue = getById(queueId);
+        userInQueueService.deleteByUserId(userId);
     }
 }

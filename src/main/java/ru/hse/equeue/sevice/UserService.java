@@ -11,19 +11,16 @@ import org.springframework.stereotype.Service;
 import ru.hse.equeue.dto.UserByIdInQueueDto;
 import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
-import ru.hse.equeue.model.QQueueUserBinding;
+import ru.hse.equeue.model.QUserInQueue;
 import ru.hse.equeue.model.QUser;
-import ru.hse.equeue.model.QueueUserBinding;
+import ru.hse.equeue.model.UserInQueue;
 import ru.hse.equeue.model.User;
 import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.enums.EUserInQueueStatus;
-import ru.hse.equeue.model.projection.UserInQueueProjection;
-import ru.hse.equeue.respository.QueueUserBindingRepository;
+import ru.hse.equeue.respository.UserInQueueRepository;
 import ru.hse.equeue.respository.UserRepository;
 import ru.hse.equeue.sevice.base.AbstractBaseService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,9 +32,9 @@ public class UserService extends AbstractBaseService<User, String, QUser, UserRe
     @Getter
     private final UserRepository repository;
 
-    private final QueueUserBindingRepository queueUserBindingRepository;
+    private final UserInQueueRepository queueUserBindingRepository;
 
-    private final QueueUserBindingRepository userQueueBindingRepository;
+    private final UserInQueueRepository userQueueBindingRepository;
 
     public User getUserByName(String name) {
         return super.get(QUser.user.name.eq(name))
@@ -58,11 +55,11 @@ public class UserService extends AbstractBaseService<User, String, QUser, UserRe
     }
 
     public UserByIdInQueueDto getUserInQueueById(String userId, Long queueId) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder(QQueueUserBinding.queueUserBinding.queue.id.eq(queueId));
-        booleanBuilder.and(QQueueUserBinding.queueUserBinding.status.name.eq(EUserInQueueStatus.IN_QUEUE));
-        List<QueueUserBinding> usersInQueue = Lists.newArrayList(queueUserBindingRepository.findAll(booleanBuilder));
+        BooleanBuilder booleanBuilder = new BooleanBuilder(QUserInQueue.userInQueue.queue.id.eq(queueId));
+        booleanBuilder.and(QUserInQueue.userInQueue.status.name.eq(EUserInQueueStatus.IN_QUEUE));
+        List<UserInQueue> usersInQueue = Lists.newArrayList(queueUserBindingRepository.findAll(booleanBuilder));
         usersInQueue.sort(Comparator.comparing(BaseEntity::getCreatedAt));
-        QueueUserBinding resUser = usersInQueue.stream().filter(it -> it.getUser().getId().equals(userId)).findFirst()
+        UserInQueue resUser = usersInQueue.stream().filter(it -> it.getUser().getId().equals(userId)).findFirst()
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.USER_NOT_FOUND));
 
         return UserByIdInQueueDto.builder()
