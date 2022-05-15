@@ -1,10 +1,14 @@
 package ru.hse.equeue.sevice;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,8 +50,8 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.QUEUE_NOT_FOUND));
     }
 
-    public Page<Queue> list(Pageable pageable) {
-        return findAll(pageable);
+    public Page<Queue> list(Pageable pageable, PositionDto positionDto) {
+        return repository.getQueueList(pageable, positionDto.getX(), positionDto.getY());
     }
 
     public List<Queue> list(PositionDto positionDto) {

@@ -60,8 +60,9 @@ public class QueueController {
 
     @PostMapping(EndPoints.QUEUE_LIST_BY_PAGE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public Page<QueueDto> list(Pageable pageable) {
-        return queueService.list(pageable).map(queueConverter::toDto);
+    public Page<QueueDto> list(Pageable pageable,
+                               @RequestBody(required = false) PositionDto positionDto) {
+        return queueService.list(pageable, positionDto).map(queueConverter::toDto);
     }
 
     @PostMapping(EndPoints.QUEUE_LIST)
