@@ -115,8 +115,11 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         return save(queue);
     }
 
-    public void removeUserFromQueue(String userId, Long queueId){
+    public void removeUserFromQueue(String userId, Long queueId) {
         Queue queue = getById(queueId);
         userInQueueService.deleteByUserId(userId);
+        queue = getById(queueId);
+        queue.getStatus().setCurrentUsersCount(queue.getStatus().getCurrentUsersCount() - 1);
+        save(queue);
     }
 }
