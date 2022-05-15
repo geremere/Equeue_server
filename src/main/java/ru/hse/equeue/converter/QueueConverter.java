@@ -13,7 +13,6 @@ import ru.hse.equeue.respository.QueueStatusEnumRepository;
 public class QueueConverter {
 
     private final ModelMapper queueMapper;
-    private final QueueStatusEnumRepository queueStatusEnumRepository;
 
     public Queue fromDto(QueueDto queueDto) {
         return queueMapper.map(queueDto, Queue.class);

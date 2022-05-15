@@ -14,14 +14,14 @@ import ru.hse.equeue.dto.PositionDto;
 import ru.hse.equeue.exception.BaseException;
 import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
-import ru.hse.equeue.model.QQueue;
-import ru.hse.equeue.model.QQueueUserBinding;
-import ru.hse.equeue.model.Queue;
-import ru.hse.equeue.model.QueueStatusEnum;
+import ru.hse.equeue.model.*;
 import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.enums.EQueueStatus;
+import ru.hse.equeue.model.enums.EUserInQueueStatus;
 import ru.hse.equeue.respository.QueueRepository;
 import ru.hse.equeue.respository.QueueStatusEnumRepository;
+import ru.hse.equeue.respository.QueueUserBindingRepository;
+import ru.hse.equeue.respository.UserInQueueStatusRepository;
 import ru.hse.equeue.sevice.base.AbstractBaseService;
 
 import java.util.Comparator;
@@ -37,7 +37,11 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
     @Getter
     private final QueueRepository repository;
 
+    private final UserService userService;
+
     private final QueueStatusEnumRepository queueStatusEnumRepository;
+    private final UserInQueueStatusRepository userInQueueStatusRepository;
+    private final QueueUserBindingRepository queueUserBindingRepository;
 
     private final AmazonAwsS3Client s3Client;
 
@@ -81,7 +85,7 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
 
     public Queue getByUserId(String userId) {
         return repository.getByUserId(userId)
-                .orElseThrow(() -> new BaseException(ExceptionMessage.QUEUE_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.QUEUE_NOT_FOUND));
     }
 
     public Queue getByOwnerId(String ownerId) {
@@ -99,5 +103,20 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         queue.setId(oldQueue.getId());
         queue.setCreatedAt(oldQueue.getCreatedAt());
         return save(queue);
+    }
+
+    public Queue standToQueue(String userId, Long queueId) {
+        Queue queue = getById(queueId);
+        User user = userService.getById(userId);
+        if (user.getId().equals(queue.getOwner().getId())) {
+            throw new BaseException(ExceptionMessage.STAND_TO_QUEUE_OWNER);
+        }
+        UserInQueueStatus status = userInQueueStatusRepository.findByName(EUserInQueueStatus.IN_QUEUE);
+        queueUserBindingRepository.save(QueueUserBinding.builder()
+                .queue(queue)
+                .user(user)
+                .status(status)
+                .build());
+        return getById(queueId);
     }
 }

@@ -1,6 +1,5 @@
 package ru.hse.equeue.controller;
 
-import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -75,5 +74,12 @@ public class QueueController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public QueueDto update(@PathVariable Long id, @RequestBody QueueDto queueDto) {
         return queueConverter.toDto(queueService.update(id, queueConverter.fromDto(queueDto)));
+    }
+
+    @GetMapping(EndPoints.USER_TO_QUEUE)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public QueueDto update(@CurrentUser CustomUserDetails user,
+                           @RequestParam(value = "queueId") Long queueId) {
+        return queueConverter.toDto(queueService.standToQueue(user.getUserId(),queueId));
     }
 }
