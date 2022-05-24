@@ -1,4 +1,4 @@
-package ru.hse.equeue.respository;
+package ru.hse.equeue.repository;
 
 import org.springframework.stereotype.Repository;
 import ru.hse.equeue.model.QUserInQueue;

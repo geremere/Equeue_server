@@ -1,4 +1,4 @@
-package ru.hse.equeue.sevice;
+package ru.hse.equeue.service;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.Getter;
@@ -8,11 +8,10 @@ import ru.hse.equeue.exception.NotFoundException;
 import ru.hse.equeue.exception.message.ExceptionMessage;
 import ru.hse.equeue.model.QUserInQueue;
 import ru.hse.equeue.model.UserInQueue;
-import ru.hse.equeue.model.UserInQueueStatus;
 import ru.hse.equeue.model.enums.EUserInQueueStatus;
-import ru.hse.equeue.respository.UserInQueueRepository;
-import ru.hse.equeue.respository.UserInQueueStatusRepository;
-import ru.hse.equeue.sevice.base.AbstractBaseService;
+import ru.hse.equeue.repository.UserInQueueRepository;
+import ru.hse.equeue.repository.UserInQueueStatusRepository;
+import ru.hse.equeue.service.base.AbstractBaseService;
 
 import java.util.Optional;
 

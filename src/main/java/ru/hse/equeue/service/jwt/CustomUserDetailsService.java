@@ -1,4 +1,4 @@
-package ru.hse.equeue.sevice.jwt;
+package ru.hse.equeue.service.jwt;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.hse.equeue.model.CustomUserDetails;
 import ru.hse.equeue.model.User;
-import ru.hse.equeue.sevice.UserService;
+import ru.hse.equeue.service.UserService;
 
 
 @Service

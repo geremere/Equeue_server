@@ -1,4 +1,4 @@
-package ru.hse.equeue.sevice.base;
+package ru.hse.equeue.service.base;
 
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;

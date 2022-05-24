@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.hse.equeue.model.base.IEntity;
 
@@ -31,6 +29,9 @@ public class User implements IEntity<String> {
     @Column(name = "photo_url")
     private String photoUrl;
 
+    @Column(name = "firebase_token")
+    private String firebaseToken;
+
     @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -52,5 +53,4 @@ public class User implements IEntity<String> {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     List<Role> roles = new ArrayList<>();
-
 }

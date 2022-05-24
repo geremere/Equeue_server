@@ -1,4 +1,4 @@
-package ru.hse.equeue.sevice.jwt;
+package ru.hse.equeue.service.jwt;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

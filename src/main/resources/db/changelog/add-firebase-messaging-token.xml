@@ -1,8 +1,12 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-    <include file="db/changelog/init-role.xml"/>
-    <include file="db/changelog/init-queue.xml"/>
-    <include file="db/changelog/add-firebase-messaging-token.xml"/>
+    <changeSet id="init-role-1" author="rmimamov">
+        <addColumn tableName="user">
+            <column name="firebase_token"
+                    type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

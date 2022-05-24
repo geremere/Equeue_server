@@ -11,7 +11,7 @@ import ru.hse.equeue.dto.CreateQueueDto;
 import ru.hse.equeue.dto.PositionDto;
 import ru.hse.equeue.dto.QueueDto;
 import ru.hse.equeue.model.CustomUserDetails;
-import ru.hse.equeue.sevice.QueueService;
+import ru.hse.equeue.service.QueueService;
 import ru.hse.equeue.util.EndPoints;
 
 import java.util.List;
@@ -35,9 +35,9 @@ public class QueueController {
 
     @GetMapping(EndPoints.QUEUE_CHANGE_STATUS)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public QueueDto changeStatus(@CurrentUser CustomUserDetails user,
+    public void changeStatus(@CurrentUser CustomUserDetails user,
                                  @RequestParam(name = "status") String status) {
-        return queueConverter.toDto(queueService.changeStatus(status, user.getUserId()));
+        queueConverter.toDto(queueService.changeStatus(status, user.getUserId()));
     }
 
     @GetMapping(EndPoints.QUEUE_BY_USER_ID)
@@ -60,9 +60,9 @@ public class QueueController {
 
     @GetMapping(EndPoints.QUEUE_SERVE_USER)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public QueueDto serve(@CurrentUser CustomUserDetails user,
+    public void serve(@CurrentUser CustomUserDetails user,
                              @RequestParam(value = "userId", required = false) Optional<String> userId) {
-        return queueConverter.toDto(queueService.serve(user.getUserId(), userId));
+        queueConverter.toDto(queueService.serve(user.getUserId(), userId));
     }
 
     @PostMapping(EndPoints.QUEUE_LIST_BY_PAGE)

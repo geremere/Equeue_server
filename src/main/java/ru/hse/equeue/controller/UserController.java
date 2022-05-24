@@ -1,16 +1,13 @@
 package ru.hse.equeue.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.hse.equeue.config.CurrentUser;
 import ru.hse.equeue.converter.UserConverter;
 import ru.hse.equeue.dto.UserByIdInQueueDto;
 import ru.hse.equeue.dto.UserDto;
 import ru.hse.equeue.model.CustomUserDetails;
-import ru.hse.equeue.sevice.UserService;
+import ru.hse.equeue.service.UserService;
 import ru.hse.equeue.util.EndPoints;
 
 @RestController
@@ -29,5 +26,12 @@ public class UserController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     private UserDto getUser(@CurrentUser CustomUserDetails user) {
         return userConverter.toDto(userService.getById(user.getUserId()));
+    }
+
+    @PutMapping(EndPoints.PUT_FIREBASE_TOKEN)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    private void addToken(@CurrentUser CustomUserDetails user,
+                          @RequestBody String token) {
+        userService.putFirebaseToken(user.getUserId(), token);
     }
 }

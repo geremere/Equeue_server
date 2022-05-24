@@ -1,4 +1,4 @@
-package ru.hse.equeue.sevice;
+package ru.hse.equeue.service;
 
 import com.google.api.client.util.Lists;
 import com.querydsl.core.BooleanBuilder;
@@ -17,9 +17,9 @@ import ru.hse.equeue.model.UserInQueue;
 import ru.hse.equeue.model.User;
 import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.enums.EUserInQueueStatus;
-import ru.hse.equeue.respository.UserInQueueRepository;
-import ru.hse.equeue.respository.UserRepository;
-import ru.hse.equeue.sevice.base.AbstractBaseService;
+import ru.hse.equeue.repository.UserInQueueRepository;
+import ru.hse.equeue.repository.UserRepository;
+import ru.hse.equeue.service.base.AbstractBaseService;
 
 import java.util.Comparator;
 import java.util.List;
@@ -67,5 +67,11 @@ public class UserService extends AbstractBaseService<User, String, QUser, UserRe
                 .name(resUser.getUser().getName())
                 .currentPosition(usersInQueue.indexOf(resUser) + 1)
                 .build();
+    }
+
+    public void putFirebaseToken(String userId, String token) {
+        User user = getById(userId);
+        user.setFirebaseToken(token);
+        save(user);
     }
 }

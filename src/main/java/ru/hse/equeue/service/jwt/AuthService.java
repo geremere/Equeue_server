@@ -1,12 +1,12 @@
-package ru.hse.equeue.sevice.jwt;
+package ru.hse.equeue.service.jwt;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hse.equeue.model.User;
 import ru.hse.equeue.model.enums.ERole;
-import ru.hse.equeue.respository.RoleRepository;
-import ru.hse.equeue.sevice.UserService;
+import ru.hse.equeue.repository.RoleRepository;
+import ru.hse.equeue.service.UserService;
 
 import java.util.Collections;
 

@@ -1,4 +1,4 @@
-package ru.hse.equeue.respository;
+package ru.hse.equeue.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

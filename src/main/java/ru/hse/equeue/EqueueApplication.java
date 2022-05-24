@@ -11,9 +11,4 @@ public class EqueueApplication {
 
         SpringApplication.run(EqueueApplication.class, args);
     }
-
-    public void some(){
-        EqueueApplication equeueApplication = EqueueApplication.this;
-    }
-
 }

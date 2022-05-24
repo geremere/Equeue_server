@@ -1,4 +1,4 @@
-package ru.hse.equeue.sevice;
+package ru.hse.equeue.service;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.Getter;
@@ -17,9 +17,9 @@ import ru.hse.equeue.model.*;
 import ru.hse.equeue.model.Queue;
 import ru.hse.equeue.model.base.BaseEntity;
 import ru.hse.equeue.model.enums.EQueueStatus;
-import ru.hse.equeue.respository.QueueRepository;
-import ru.hse.equeue.respository.QueueStatusEnumRepository;
-import ru.hse.equeue.sevice.base.AbstractBaseService;
+import ru.hse.equeue.repository.QueueRepository;
+import ru.hse.equeue.repository.QueueStatusEnumRepository;
+import ru.hse.equeue.service.base.AbstractBaseService;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package ru.hse.equeue.respository;
+package ru.hse.equeue.repository;
 
 import com.querydsl.core.types.EntityPath;
 import org.springframework.data.jpa.repository.JpaRepository;

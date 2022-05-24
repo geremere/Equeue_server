@@ -21,6 +21,7 @@ public final class EndPoints {
     public static final String AUTH = BASE + "/auth/{token}";
 
     public static final String GET_CURRENT_USER = BASE_USER + GET;
+    public static final String PUT_FIREBASE_TOKEN = BASE_USER + "/firebase-token";
 
     public static final String USER_BY_ID = BASE_USER + BY_ID;
 

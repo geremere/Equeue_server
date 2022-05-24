@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.hse.equeue.sevice.jwt.JwtFilter;
+import ru.hse.equeue.service.jwt.JwtFilter;
 import ru.hse.equeue.util.EndPoints;
 
 @Configuration

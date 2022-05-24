@@ -1,4 +1,4 @@
-package ru.hse.equeue.sevice.base;
+package ru.hse.equeue.service.base;
 
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hse.equeue.model.base.IEntity;
-import ru.hse.equeue.respository.BaseRepository;
+import ru.hse.equeue.repository.BaseRepository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
