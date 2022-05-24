@@ -142,7 +142,7 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
                     .notification(Notification.builder()
                             .title("Скоро ваша очередь")
                             .body("Ваша очередь примерно через " +
-                                    queue.getUsersQueue().indexOf(userInQueue) * queue.getStatus().getServiceTime())
+                                    queue.getUsersQueue().indexOf(userInQueue) * queue.getStatus().getServiceTime() + "минут")
                             .build())
                     .build();
             notificationClient.pushNotification(request);

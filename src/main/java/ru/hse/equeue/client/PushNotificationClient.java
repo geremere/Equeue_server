@@ -1,5 +1,7 @@
 package ru.hse.equeue.client;
 
+import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -8,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import ru.hse.equeue.dto.NotificationRequest;
 
 @Component
+@Slf4j
 public class PushNotificationClient {
 
     @Value("${firebase.notifications.token}")
@@ -19,12 +22,13 @@ public class PushNotificationClient {
             .build();
 
     public void pushNotification(NotificationRequest notificationRequest){
-        notificationWebClient.post()
+        Object obj = notificationWebClient.post()
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION,  "key=" + notificationToken)
                 .bodyValue(notificationRequest)
                 .retrieve()
                 .bodyToMono(Object.class)
                 .block();
+        log.info(obj.toString());
     }
 }
