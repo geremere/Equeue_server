@@ -15,13 +15,13 @@ public class PushNotificationClient {
 
     private WebClient notificationWebClient = WebClient.builder()
             .baseUrl("https://fcm.googleapis.com/fcm/send")
-            .defaultHeader(HttpHeaders.AUTHORIZATION, "key=" + notificationToken)
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build();
 
     public void pushNotification(NotificationRequest notificationRequest){
         notificationWebClient.post()
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION,  "key=" + notificationToken)
                 .bodyValue(notificationRequest)
                 .retrieve()
                 .bodyToMono(Object.class)
