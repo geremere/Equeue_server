@@ -9,6 +9,7 @@ import ru.hse.equeue.model.QQueue;
 import ru.hse.equeue.model.Queue;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Repository
 public interface QueueRepository extends BaseRepository<Queue, Long, QQueue> {
@@ -23,4 +24,11 @@ public interface QueueRepository extends BaseRepository<Queue, Long, QQueue> {
             "order by abs(x-:x), abs(y-:y) ",
             nativeQuery = true)
     Page<Queue> getQueueList(Pageable pageable, @Param(value = "x") Double x, @Param(value = "y") Double y);
+
+    @Query(value = "select queue.* from queue " +
+            "where name ilike '%' || :search || '%' " +
+            "or address ilike '%' || :search || '%' " +
+            "order by abs(x-:x), abs(y-:y) ",
+            nativeQuery = true)
+    Page<Queue> searchQueueList(Pageable pageable,@Param(value = "search")String search, @Param(value = "x") Double x, @Param(value = "y") Double y);
 }

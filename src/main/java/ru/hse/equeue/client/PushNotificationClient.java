@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import ru.hse.equeue.dto.NotificationRequest;
 
 @Component
@@ -21,14 +22,17 @@ public class PushNotificationClient {
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build();
 
-    public void pushNotification(NotificationRequest notificationRequest){
-        Object obj = notificationWebClient.post()
+    public void pushNotification(NotificationRequest notificationRequest) {
+        notificationWebClient.post()
                 .accept(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION,  "key=" + notificationToken)
+                .header(HttpHeaders.AUTHORIZATION, "key=" + notificationToken)
                 .bodyValue(notificationRequest)
                 .retrieve()
                 .bodyToMono(Object.class)
+                .onErrorResume(error -> {
+                    log.error(error.getMessage());
+                    return Mono.error(error);
+                })
                 .block();
-        log.info(obj.toString());
     }
 }

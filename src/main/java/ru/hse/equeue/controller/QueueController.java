@@ -36,7 +36,7 @@ public class QueueController {
     @GetMapping(EndPoints.QUEUE_CHANGE_STATUS)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public void changeStatus(@CurrentUser CustomUserDetails user,
-                                 @RequestParam(name = "status") String status) {
+                             @RequestParam(name = "status") String status) {
         queueConverter.toDto(queueService.changeStatus(status, user.getUserId()));
     }
 
@@ -61,15 +61,16 @@ public class QueueController {
     @GetMapping(EndPoints.QUEUE_SERVE_USER)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public void serve(@CurrentUser CustomUserDetails user,
-                             @RequestParam(value = "userId", required = false) Optional<String> userId) {
+                      @RequestParam(value = "userId", required = false) Optional<String> userId) {
         queueConverter.toDto(queueService.serve(user.getUserId(), userId));
     }
 
     @PostMapping(EndPoints.QUEUE_LIST_BY_PAGE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Page<QueueDto> list(Pageable pageable,
-                               @RequestBody(required = false) PositionDto positionDto) {
-        return queueService.list(pageable, positionDto).map(queueConverter::toDto);
+                               @RequestBody(required = false) PositionDto positionDto,
+                               @RequestParam(required = false, value = "search") Optional<String> search) {
+        return queueService.list(pageable, positionDto, search).map(queueConverter::toDto);
     }
 
     @PostMapping(EndPoints.QUEUE_LIST)

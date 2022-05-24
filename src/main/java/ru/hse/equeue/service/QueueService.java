@@ -49,8 +49,12 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.QUEUE_NOT_FOUND));
     }
 
-    public Page<Queue> list(Pageable pageable, PositionDto positionDto) {
-        return repository.getQueueList(pageable, positionDto.getX(), positionDto.getY());
+    public Page<Queue> list(Pageable pageable, PositionDto positionDto, Optional<String> search) {
+        if (search.isPresent()) {
+            return repository.searchQueueList(pageable, search.get(), positionDto.getX(), positionDto.getY());
+        } else {
+            return repository.getQueueList(pageable, positionDto.getX(), positionDto.getY());
+        }
     }
 
     public List<Queue> list(PositionDto positionDto) {
@@ -110,8 +114,8 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         if (user.getId().equals(queue.getOwner().getId())) {
             throw new BaseException(ExceptionMessage.STAND_TO_QUEUE_OWNER);
         }
-        if(userInQueueService.isExistByUserId(user.getId())){
-            throw  new BaseException(ExceptionMessage.STAND_TO_SECOND_QUEUE);
+        if (userInQueueService.isExistByUserId(user.getId())) {
+            throw new BaseException(ExceptionMessage.STAND_TO_SECOND_QUEUE);
         }
         userInQueueService.create(UserInQueue.builder()
                 .queue(queue)
