@@ -28,6 +28,10 @@ android:
 jwt:
   secret: ${SECRET}
 
+firebase:
+  notifications:
+    token: ${NOTIFICATION_SECRET}
+
 cloud:
   aws:
     credentials:

@@ -25,6 +25,10 @@ spring:
 android:
   clientId: ${CLIENT_IDS}
 
+firebase:
+  notifications:
+    token: ${NOTIFICATION_SECRET}
+
 jwt:
   secret: ${SECRET}
 

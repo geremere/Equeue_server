@@ -71,7 +71,7 @@ public class UserService extends AbstractBaseService<User, String, QUser, UserRe
 
     public void putFirebaseToken(String userId, String token) {
         User user = getById(userId);
-        user.setFirebaseToken(token);
+        user.setFirebaseToken(token.substring(1, token.length() - 1));
         save(user);
     }
 }

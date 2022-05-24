@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.hse.equeue.client.AmazonAwsS3Client;
+import ru.hse.equeue.client.PushNotificationClient;
+import ru.hse.equeue.dto.Notification;
+import ru.hse.equeue.dto.NotificationRequest;
 import ru.hse.equeue.dto.PositionDto;
 import ru.hse.equeue.exception.BaseException;
 import ru.hse.equeue.exception.NotFoundException;
@@ -38,6 +41,7 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
     private final UserInQueueService userInQueueService;
 
     private final AmazonAwsS3Client s3Client;
+    private final PushNotificationClient notificationClient;
 
 
     public Queue getById(Long id) {
@@ -127,7 +131,21 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         User user = userService.getById(ownerId);
         Optional<UserInQueue> servisedUserInQueue = userInQueueService.deleteServised(user.getQueue().getId());
         userId.ifPresent(id -> userInQueueService.newServe(id, user.getQueue().getId()));
-        Queue queue  = getById(user.getQueue().getId());
+        Queue queue = getById(user.getQueue().getId());
+        queue.getUsersQueue().sort(Comparator.comparing(BaseEntity::getCreatedAt));
+        queue.getUsersQueue().stream().limit(3).skip(1).forEach(userInQueue -> {
+            NotificationRequest request = NotificationRequest.builder()
+                    .to(userInQueue.getUser().getFirebaseToken())
+                    .notification(Notification.builder()
+                            .title("Скоро ваша очередь")
+                            .body("Ваша очередь примерно через " +
+                                    queue.getUsersQueue().indexOf(userInQueue) * queue.getStatus().getServiceTime())
+                            .build())
+                    .build();
+            notificationClient.pushNotification(request);
+        });
+
+
         servisedUserInQueue.ifPresent(userInQueue -> {
             long delta = (new Date().getTime() - userInQueue.getUpdatedAt().getTime()) / 1000;
             queue.getStatus()
