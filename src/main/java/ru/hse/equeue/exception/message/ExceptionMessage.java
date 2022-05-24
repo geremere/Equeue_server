@@ -13,7 +13,8 @@ public enum ExceptionMessage
     USER_NOT_FOUND("User not found"),
     QUEUE_NOT_FOUND("Queue not found"),
     IMAGE_NOT_UPLOADED("Image not uploaded"),
-    STAND_TO_QUEUE_OWNER("You cant stand to own queue"),
+    STAND_TO_QUEUE_OWNER("Вы не можете встать в собсвенную очередь"),
+    STAND_TO_SECOND_QUEUE("Вы не можете встать в две очереди одновременно"),
     CHANGE_STATUS_NOT_ALLOWED("You haven't allow to change status of queue");
 
     private final String value;

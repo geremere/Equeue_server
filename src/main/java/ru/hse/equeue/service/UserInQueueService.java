@@ -34,6 +34,17 @@ public class UserInQueueService extends AbstractBaseService<UserInQueue, Long, Q
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.USER_NOT_FOUND));
     }
 
+    public boolean isExistByUserId(String userId) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder(QUserInQueue.userInQueue.user.id.eq(userId));
+        Optional<UserInQueue> user = get(booleanBuilder);
+        if (user.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public void deleteByUserId(String userId) {
         UserInQueue userInQueue = findByUserId(userId);
         delete(userInQueue);

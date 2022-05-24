@@ -110,6 +110,9 @@ public class QueueService extends AbstractBaseService<Queue, Long, QQueue, Queue
         if (user.getId().equals(queue.getOwner().getId())) {
             throw new BaseException(ExceptionMessage.STAND_TO_QUEUE_OWNER);
         }
+        if(userInQueueService.isExistByUserId(user.getId())){
+            throw  new BaseException(ExceptionMessage.STAND_TO_SECOND_QUEUE);
+        }
         userInQueueService.create(UserInQueue.builder()
                 .queue(queue)
                 .user(user)
