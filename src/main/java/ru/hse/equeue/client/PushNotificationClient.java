@@ -10,7 +10,7 @@ import ru.hse.equeue.dto.NotificationRequest;
 @Component
 public class PushNotificationClient {
 
-    @Value("${firebase.notification.token}")
+    @Value("${firebase.notifications.token}")
     private String notificationToken;
 
     private WebClient notificationWebClient = WebClient.builder()
