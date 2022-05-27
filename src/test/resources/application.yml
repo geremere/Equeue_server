@@ -1,7 +1,8 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
   compression:
     enabled: true
+
 java:
   runtime:
     version: 11
@@ -35,6 +36,10 @@ springdoc:
   swagger-ui:
     path: /swagger-ui/api-doc
     operationsSorter: method
+
+firebase:
+  notifications:
+    token: secret
 
 cloud:
   aws:

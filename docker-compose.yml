@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+  db:
+    image: postgres:13.1
+    container_name: db
+    environment:
+      POSTGRES_DB: "equeue"
+      POSTGRES_USERNAME: "queue_password"
+      POSTGRES_PASSWORD: "queue_password"
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+  manager_kit_server:
+    container_name: equeue_server
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/equeue
+      - SPRING_DATASOURCE_USERNAME=queue_password
+      - SPRING_DATASOURCE_PASSWORD=queue_password
+      - CLIENT_IDS=608288448751-cgjuabq7onf4oi1jg9d8hh6gdq4oma1k.apps.googleusercontent.com,791564526179-j6lbti8ime42257avsrjpgcrf8bbj5bs.apps.googleusercontent.com
+      - AWS_ACCESS_KEY=AKIAUBCXPMUZ2OCLA3A3
+      - AWS_SECRET_KEY=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
+      - NOTIFICATION_SECRET=AAAAjzzu85k:APA91bE4vcw5oi81qQ1vbJAZf9P8bRyHm7HC-NGAZtj2ioQARVg2-YZc9f6yxs0PUjmnbiBIkwkK9knxetNPWwLQk2UGbk8baBMMXtBEXz2yII_AarpapDzWqQhgjh15Ek5zW4n62oau
+      - SECRET=jwt_secret_key-1
