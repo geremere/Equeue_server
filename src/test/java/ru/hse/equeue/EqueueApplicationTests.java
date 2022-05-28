@@ -3,11 +3,11 @@ package ru.hse.equeue;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class EqueueApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-}
+//@SpringBootTest
+//class EqueueApplicationTests {
+//
+//    @Test
+//    void contextLoads() {
+//    }
+//
+//}

@@ -4,9 +4,9 @@ services:
     image: postgres:13.1
     container_name: db
     environment:
-      POSTGRES_DB: "equeue"
-      POSTGRES_USERNAME: "queue_password"
-      POSTGRES_PASSWORD: "queue_password"
+      POSTGRES_DB: equeue
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - .:/docker-entrypoint-initdb.d
     ports:
@@ -20,11 +20,11 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/equeue
-      - SPRING_DATASOURCE_USERNAME=queue_password
-      - SPRING_DATASOURCE_PASSWORD=queue_password
-      - CLIENT_IDS=${CLIENT_IDS}
-      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
-      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
-      - NOTIFICATION_SECRET=${NOTIFICATION_SECRET}
-      - SECRET=${SECRET}
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/equeue"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "postgres"
+      CLIENT_IDS: "123"
+      AWS_ACCESS_KEY: "123"
+      AWS_SECRET_KEY: "123"
+      NOTIFICATION_SECRET: "123"
+      SECRET: 123
